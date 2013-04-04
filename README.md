@@ -37,41 +37,49 @@ Resource files (mix-in sample)
 
 Initialize LocaleManager and set localeChain (ie. using the handy [LocaleUtil](https://code.google.com/p/as3localelib/) to sort supported locales based on system preferences). 
 
-    var locales:LocaleManager = new LocaleManager();
-    locales.localeChain = LocaleUtil.sortLanguagesByPreference(
-        ["de_CH", "de_DE", en_US], Capabilities.languages, "en_US");
+```as3
+var locales:LocaleManager = new LocaleManager();
+locales.localeChain = LocaleUtil.sortLanguagesByPreference(
+    ["de_CH", "de_DE", en_US], Capabilities.languages, "en_US");
+```
 
 Adding _required bundles_
 
 The bundle files are loaded/parsed during runtime. Adding only the required bundles saves time.
 
-    locales.addRequiredBundles([
-        {locale:"de_DE", bundleName:"bundleName"},
-        {locale:"de_CH", bundleName:"bundleName"}
-    ], onComplete);
-    
-    // optional complete responder
-    function onComplete(success:Boolean):void
-    {
-        if ( success ) trace("Required bundles successfully added.");
-	    else trace("Adding required bundles failed.");
-    }
+```as3
+locales.addRequiredBundles([
+    {locale:"de_DE", bundleName:"bundleName"},
+    {locale:"de_CH", bundleName:"bundleName"}
+], onComplete);
+
+// optional complete responder
+function onComplete(success:Boolean):void
+{
+    if ( success ) trace("Required bundles successfully added.");
+    else trace("Adding required bundles failed.");
+}
+```
 
 
 Adding additional bundles
 
-    locales.addBundle("en_US", "bundleName", onComplete);
-    
-    // optional complete responder
-    function onComplete(locale:String, bundleName:String, success:Boolean):void
-    {
-        if ( success ) trace("Bundle " + locale + "/" + bundleName + " added.");
-        else trace("Adding bundle " + locale + "/" + bundleName + " failed.");
-    }
+```as3
+locales.addBundle("en_US", "bundleName", onComplete);
+
+// optional complete responder
+function onComplete(locale:String, bundleName:String, success:Boolean):void
+{
+    if ( success ) trace("Bundle " + locale + "/" + bundleName + " added.");
+    else trace("Adding bundle " + locale + "/" + bundleName + " failed.");
+}
+```
 
 Retrieving resources 
 
-    // given localeChain ["de_CH","de_DE"]
-    trace(locales.getString("bundleName", "PRICE")); // Preis
-    trace(locales.getString("bundleName", "CURRENCY_SHORT")); // CHF
+```as3
+// given localeChain ["de_CH","de_DE"]
+trace(locales.getString("bundleName", "PRICE")); // Preis
+trace(locales.getString("bundleName", "CURRENCY_SHORT")); // CHF
+```
 
