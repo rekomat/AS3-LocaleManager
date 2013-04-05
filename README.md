@@ -13,7 +13,7 @@ __Note: This code has not been tested in a production environment yet. Improveme
 The bundle files are stored in `app://locale/[locale]/[bundleName].txt`  (ie.: `app://locale/en_US/localizedStrings.txt`). Make sure the directory "locale" is copied to your build package:
 
 * Put the directory locale in your src directory.
-* Add the directory containing 'locale' to your Source Path (Flash Builder: Project > Properties > ActionScript Build Path > Source Path).
+* Or add the directory containing 'locale' to your Source Path (Flash Builder: Project > Properties > ActionScript Build Path > Source Path).
 
 The content format for bundle files is `KEY = Value` followed by a line break. __You can use the "=" character within the value, but not for keys or comments.__
 
@@ -26,16 +26,19 @@ The locales are returned by precedence given in localeChain. Mix-ins are support
 
 ## Usage Sample
 
-Resource files (mix-in sample)
+### Resource files (mix-in sample)
 
-    // de_DE/bundleName.txt
+    // File: de_DE/bundleName.txt
+    // Complete resource file
     CURRENCY_SHORT = EUR
     PRICE          = Preis
 
-    // de_CH/bundleName.txt
+    // File: de_CH/bundleName.txt
+    // Incomplete resource file (used as mix-in)
     CURRENCY_SHORT = CHF
 
-Initialize LocaleManager and set localeChain (ie. using the handy [LocaleUtil](https://code.google.com/p/as3localelib/) to sort supported locales based on system preferences). 
+### Initialize LocaleManager and set localeChain 
+I recommend to use the handy [LocaleUtil](https://code.google.com/p/as3localelib/) to sort supported locales based on system preferences. 
 
 ```as3
 var locales:LocaleManager = new LocaleManager();
@@ -43,9 +46,9 @@ locales.localeChain = LocaleUtil.sortLanguagesByPreference(
     ["de_CH", "de_DE", en_US], Capabilities.languages, "en_US");
 ```
 
-Adding _required bundles_
+### Adding required bundles
 
-The bundle files are loaded/parsed during runtime. Adding only the required bundles saves time.
+Use `addRequiredBundles` to add all required bundles. This is typically used on startup. The bundle files are loaded/parsed at runtime. Adding only the required bundles saves time.
 
 ```as3
 locales.addRequiredBundles([
@@ -61,8 +64,18 @@ function onComplete(success:Boolean):void
 }
 ```
 
+If you work with a single resource bundle per locale and you do not need mix-ins, this will do the job: 
+```as3
+locales.addRequiredBundles([
+    {locale:locales.localeChain[0], bundleName:"bundleName"}
+], onComplete);
 
-Adding additional bundles
+// complete responder (s. above)
+```
+
+### Adding additional bundles
+
+With `addBundle` you can add bundles later. If you have an app with many scenes/levels and many resources in your bundles it might be better to split the resources into several bundles and just load the ones really needed (ie. when switching levels). 
 
 ```as3
 locales.addBundle("en_US", "bundleName", onComplete);
@@ -74,8 +87,16 @@ function onComplete(locale:String, bundleName:String, success:Boolean):void
     else trace("Adding bundle " + locale + "/" + bundleName + " failed.");
 }
 ```
+Use `locales.localeChain[0]` as parameter if you just need to add a single bundle for the primary locale.
+```as3
+locales.addBundle(locales.localeChain[0], "anotherBundleName", onComplete);
 
-Retrieving resources 
+// complete responder (s. above)
+```
+
+### Retrieving resources 
+
+`getString` returns a given resource of a given bundle. Localized of course. 
 
 ```as3
 // given localeChain ["de_CH","de_DE"]
@@ -83,3 +104,6 @@ trace(locales.getString("bundleName", "PRICE")); // Preis
 trace(locales.getString("bundleName", "CURRENCY_SHORT")); // CHF
 ```
 
+## Make it better
+Suggestions, improvements, feedback and whatever is welcome! 
+[@rekomat](https://twitter.com/rekomat)
