@@ -21,37 +21,37 @@ package ch.ala.locale
 	import mx.utils.StringUtil;
 
 	/** LocaleManager provides basic localization support. It takes care of loading/parsing
-	 * 	resource bundle files (*.txt) and returns localized resources based on the precedence 
-	 * 	of the locales set in localeChain.
+	 *  resource bundle files (*.txt) and returns localized resources based on the precedence 
+	 *  of the locales set in localeChain.
 	 * 
-	 * 	<p>The bundle files are stored in app://locale/[locale]/[bundleName].txt 
-	 * 	(ie.: app://locale/en_US/localizedStrings.txt).
+	 *  <p>The bundle files are stored in app://locale/[locale]/[bundleName].txt 
+	 *  (ie.: app://locale/en_US/localizedStrings.txt).
 	 * 
-	 * 	<p>The content format for bundle files is <code>KEY = Value[Linebreak]</code>. 
-	 * 	<strong>You can use the = sign within the value, but not for keys or comments.</strong> 
-	 * 	
-	 * 	<p>Sample:<br/>
-	 * 	<code>
-	 * 	# Any line without "equals" char is a comment.<br/>
-	 * 	LABEL_FIRSTNAME = Firstname<br/>
-	 * 	LABEL_LASTNAME  = Lastname<br/>
-	 * 	</code>
+	 *  <p>The content format for bundle files is <code>KEY = Value[Linebreak]</code>. 
+	 *  <strong>You can use the = sign within the value, but not for keys or comments.</strong> 
+	 *  
+	 *  <p>Sample:<br/>
+	 *  <code>
+	 *  # Any line without "equals" char is a comment.<br/>
+	 *  LABEL_FIRSTNAME = Firstname<br/>
+	 *  LABEL_LASTNAME  = Lastname<br/>
+	 *  </code>
 	 * 
-	 * 	<p>The locales are returned by precedence given in localeChain. Mix-ins are supported. 
-	 * 	This allows to work with incomplete bundles (ie. separate bundles for different regions 
-	 * 	of the same language). 
+	 *  <p>The locales are returned by precedence given in localeChain. Mix-ins are supported. 
+	 *  This allows to work with incomplete bundles (ie. separate bundles for different regions 
+	 *  of the same language). 
 	 * 
-	 * 	<p>Sample: <br/>
-	 * 	de_DE: CURRENCY_SHORT = EUR, PRICE = Preis<br/>
-	 * 	de_CH: CURRENCY_SHORT = CHF
+	 *  <p>Sample: <br/>
+	 *  de_DE: CURRENCY_SHORT = EUR, PRICE = Preis<br/>
+	 *  de_CH: CURRENCY_SHORT = CHF
 	 * 
-	 * 	<p>If localeChain is ["de_CH", "de_DE"] PRICE would return "Preis" while CURRENCY_SHORT
-	 * 	would return "CHF" */
+	 *  <p>If localeChain is ["de_CH", "de_DE"] PRICE would return "Preis" while CURRENCY_SHORT
+	 *  would return "CHF" */
 	public class LocaleManager
 	{
-		/*	=== Static Constants ===  */
+		/*  === Static Constants ===  */
 		
-		/*	=== Properties ===  */
+		/*  === Properties ===  */
 		
 		private var _localeChain:Array;
 		
@@ -61,44 +61,44 @@ package ch.ala.locale
 		private var bundles:Dictionary;
 		
 		/** Bundle files are loaded in queue. When adding bundles, they're pushed into this 
-		 * 	queue and removed from queue when loading and parsing is completed or if an 
-		 * 	error occurs. */
+		 *  queue and removed from queue when loading and parsing is completed or if an 
+		 *  error occurs. */
 		private var loadingQueue:Array;
 		
 		/** When a bundle has been loaded an parsed, the next bundle in queue is loaded
-		 * 	with a delay of 1ms using setTimeout. This way the frame rate has a chance to breathe, 
-		 * 	specially if parsing larger files. */
+		 *  with a delay of 1ms using setTimeout. This way the frame rate has a chance to breathe, 
+		 *  specially if parsing larger files. */
 		private var timeoutID:uint;
 		
-		/** When verbose is set true, output is logged to the console. */
+		/** If verbose is set true, output is logged to the console. */
 		private var verbose:Boolean = false;
 		
 		
-		/*	=== Setup ===  */
+		/*  === Setup ===  */
 		
 		/** Creates a new LocaleManager. */
 		public function LocaleManager()
 		{
-			_localeChain			= new Array();
-			_requiredBundlesReady	= true;
-			bundles					= new Dictionary();
-			loadingQueue			= new Array();
+			_localeChain          = new Array();
+			_requiredBundlesReady = true;
+			bundles               = new Dictionary();
+			loadingQueue          = new Array();
 		}
 		
 		
-		/*	=== Load and parse resource bundle files ===  */
+		/*  === Load and parse resource bundle files ===  */
 		
 		/** Adds a set of required resource bundles and an optional responder function.
 		 *  The responder is invoked when all required bundles are ready. The parameter indicates
-		 * 	whether adding the bundles was successful. 
+		 *  whether adding the bundles was successful. 
 		 * 
-		 * 	<p>Bundles added this way take precedence over the ones added with addBundle. 
+		 *  <p>Bundles added this way take precedence over the ones added with addBundle. 
 		 * 
-		 * 	<p>Parameter bundles contains Objects with properties locale and bundleName
-		 * 	<code>
-		 * 	[{locale:"fr_CA", bundleName:"LocalizedStrings"}, <br/>
-		 * 	{locale:"fr_FR", bundleName:"LocalizedStrings"}] 
-		 * 	</code> */
+		 *  <p>Parameter bundles contains Objects with properties locale and bundleName
+		 *  <code>
+		 *  [{locale:"fr_CA", bundleName:"LocalizedStrings"}, <br/>
+		 *  {locale:"fr_FR", bundleName:"LocalizedStrings"}] 
+		 *  </code> */
 		public function addRequiredBundles(bundles:Array, onRequiredComplete:Function = null):void
 		{
 			_requiredBundlesReady = false;
@@ -107,9 +107,9 @@ package ch.ala.locale
 			for ( var i:int = bundles.length - 1; i >= 0; i-- ) 
 			{
 				loadingQueue.unshift({
-					"locale":		bundles[i].locale,
-					"bundleName":	bundles[i].bundleName,
-					"onComplete":	onComplete
+					"locale":     bundles[i].locale,
+					"bundleName": bundles[i].bundleName,
+					"onComplete": onComplete
 				});
 			}
 			
@@ -145,9 +145,9 @@ package ch.ala.locale
 		{
 			// adding bundle to the queue (duplicate check done before loading)
 			loadingQueue.push({
-				"locale": 		locale,
-				"bundleName":	bundleName,
-				"onComplete":	onComplete
+				"locale":     locale,
+				"bundleName": bundleName,
+				"onComplete": onComplete
 			});
 			
 			// start loading if not already in progress
@@ -261,10 +261,10 @@ package ch.ala.locale
 		}
 		
 		
-		/*	=== Retrieving resources ===  */
+		/*  === Retrieving resources ===  */
 		
 		/** Returns the localized resource from a given bundle of a given resource name based on 
-		 * 	the precedence in localeChain if available or an empty String if not. */ 
+		 *  the precedence in localeChain if available or an empty String if not. */ 
 		public function getString(bundleName:String, resourceName:String):String
 		{
 			var length:uint = _localeChain.length;
@@ -282,7 +282,7 @@ package ch.ala.locale
 		}
 
 		
-		/*	=== Getter/Setter ===  */
+		/*  === Getter/Setter ===  */
 		
 		/** Locales ordered by precedence (ie. ["en_US", "en_CA", "fr_CA", "fr_FR"]). */
 		public function get localeChain():Array { return _localeChain; }
@@ -292,11 +292,11 @@ package ch.ala.locale
 		}
 		
 		/** Indicates whether all required bundles are ready. 
-		 * 	<p>NOTE: Will return true if no required bundles have been added. */
+		 *  <p>NOTE: Will return true if no required bundles have been added. */
 		public function get requiredBundlesReady():Boolean { return _requiredBundlesReady; }
 
 		
-		/*	=== Helpers ===  */
+		/*  === Helpers ===  */
 		
 		/** Logs output to the console if verbose is true. */
 		private function log(msg:String):void
