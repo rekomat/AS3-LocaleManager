@@ -70,8 +70,7 @@ package ch.ala.locale
 		 *  specially if parsing larger files. */
 		private var timeoutID:uint;
 		
-		/** If verbose is set true, output is logged to the console. */
-		private var verbose:Boolean = false;
+		private var _verbose:Boolean = false;
 		
 		
 		/*  === Setup ===  */
@@ -298,6 +297,13 @@ package ch.ala.locale
 		 *  <p>NOTE: Will return true if no required bundles have been added. */
 		public function get requiredBundlesReady():Boolean { return _requiredBundlesReady; }
 
+		/** If verbose is set true, output is logged to the console. */
+		public function get verbose():Boolean { return _verbose; }
+		public function set verbose(value:Boolean):void
+		{
+			_verbose = value;
+		}
+		
 		
 		/*  === Helpers ===  */
 		
