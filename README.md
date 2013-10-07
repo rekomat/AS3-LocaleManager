@@ -51,12 +51,13 @@ locales.localeChain = LocaleUtil.sortLanguagesByPreference(
 
 ### Adding required bundles
 
-Use `addRequiredBundles` to add all required bundles. This is typically used on startup. The bundle files are loaded/parsed at runtime. Adding only the required bundles saves time.
+Use `addRequiredBundles` to add all required bundles. This is typically used on startup. The bundle files are loaded/parsed at runtime. Adding only the required bundles saves time. You can safely omit `useLinebreak:true` if you do not use line breaks (`\n`) in your resource file (cmp. next example). 
+
 
 ```as3
 locales.addRequiredBundles([
-    {locale:"de_DE", bundleName:"bundleName"},
-    {locale:"de_CH", bundleName:"bundleName"}
+    {locale:"de_DE", bundleName:"bundleName", useLinebreak:true},
+    {locale:"de_CH", bundleName:"bundleName", useLinebreak:true}
 ], onComplete);
 
 // optional complete responder
@@ -81,7 +82,7 @@ locales.addRequiredBundles([
 With `addBundle` you can add bundles later. If you have an app with many scenes/levels and many resources in your bundles it might be better to split the resources into several bundles and just load the ones really needed (ie. when switching levels). 
 
 ```as3
-locales.addBundle("en_US", "bundleName", onComplete);
+locales.addBundle("en_US", "bundleName", false, onComplete);
 
 // optional complete responder
 function onComplete(locale:String, bundleName:String, success:Boolean):void
@@ -92,7 +93,7 @@ function onComplete(locale:String, bundleName:String, success:Boolean):void
 ```
 Use `locales.localeChain[0]` as parameter if you just need to add a single bundle for the primary locale.
 ```as3
-locales.addBundle(locales.localeChain[0], "anotherBundleName", onComplete);
+locales.addBundle(locales.localeChain[0], "anotherBundleName", false, onComplete);
 
 // complete responder (s. above)
 ```
