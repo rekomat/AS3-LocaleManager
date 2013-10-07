@@ -13,3 +13,6 @@ bin/
 
 # OS X folders
 .DS_Store
+
+#Subversion
+.svn
