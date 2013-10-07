@@ -262,8 +262,14 @@ package ch.ala.locale
 		
 		/*  === Retrieving resources ===  */
 		
-		/** Returns the localized resource from a given bundle of a given resource name based on 
-		 *  the precedence in localeChain if available or an empty String if not. */ 
+		/** <p>Returns the localized resource from a given bundle of a given resource name based on 
+		 *  the precedence in localeChain if available or an empty String if not. 
+		 *  <p>Sample for placeholders and parameters (thanks halfjust!):<br/> 
+		 *  <code>
+		 *  USRMSG_UNLOCK = Congratulations {0}! You just unlocked {1}!
+		 *  getString("localizedStrings", "USRMSG_UNLOCK", ["Superman", "super powers"]); 
+		 *  // "Congratulations Superman! You just unlocked super powers!"
+		 *  </code> */
 		public function getString(bundleName:String, resourceName:String, parameters:Array = null):String
 		{
 			var length:uint = _localeChain.length;

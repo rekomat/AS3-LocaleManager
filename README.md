@@ -26,16 +26,19 @@ The locales are returned by precedence given in localeChain. Mix-ins are support
 
 ## Usage Sample
 
-### Resource files (mix-in sample)
+### Resource files
 
     // File: de_DE/bundleName.txt
     // Complete resource file
     CURRENCY_SHORT = EUR
     PRICE          = Preis
+    USRMSG_UNLOCK  = Gratulation {0}, du hast jetzt {1}!
 
     // File: de_CH/bundleName.txt
     // Incomplete resource file (used as mix-in)
     CURRENCY_SHORT = CHF
+    
+The sample uses mix-ins and placeholders.
 
 ### Initialize LocaleManager and set localeChain 
 I recommend to use the handy [LocaleUtil](https://code.google.com/p/as3localelib/) to sort supported locales based on system preferences. 
@@ -96,12 +99,13 @@ locales.addBundle(locales.localeChain[0], "anotherBundleName", onComplete);
 
 ### Retrieving resources 
 
-`getString` returns a given resource of a given bundle. Localized of course. 
+`getString` returns a given resource of a given bundle. Localized of course. The third sample shows how to use placeholders and parameters. 
 
 ```as3
 // given localeChain ["de_CH","de_DE"]
-trace(locales.getString("bundleName", "PRICE")); // Preis
-trace(locales.getString("bundleName", "CURRENCY_SHORT")); // CHF
+locales.getString("bundleName", "PRICE"); // Preis
+locales.getString("bundleName", "CURRENCY_SHORT"); // CHF
+locales.getString("bundleName", "USRMSG_UNLOCK", ["Superman", "Superkraft"]); // Gratulation Superman, du hast jetzt Superkraft!
 ```
 
 ## Make it better
