@@ -265,7 +265,7 @@ package ch.ala.locale
 		
 		/** Returns the localized resource from a given bundle of a given resource name based on 
 		 *  the precedence in localeChain if available or an empty String if not. */ 
-		public function getString(bundleName:String, resourceName:String):String
+		public function getString(bundleName:String, resourceName:String, parameters:Array = null):String
 		{
 			var length:uint = _localeChain.length;
 			for ( var i:uint = 0; i < length; i++ ) 
@@ -274,7 +274,10 @@ package ch.ala.locale
 					&& bundleName in bundles[_localeChain[i]] 
 					&& resourceName in bundles[_localeChain[i]][bundleName] )
 				{
-					return bundles[_localeChain[i]][bundleName][resourceName];
+					var value:String = bundles[_localeChain[i]][bundleName][resourceName];
+					if (parameters)
+						value = StringUtil.substitute(value, parameters);
+					return value;
 				}
 			}
 			log("getString(" + bundleName + ", " + resourceName +"): No matching resource found.");
