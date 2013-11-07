@@ -260,7 +260,7 @@ package ch.ala.locale
 				// ignore blank lines and comments (all lines without "=")
 				if (pair.length < 2) continue;
 				// parse line breaks in text
-				if (useLinebreak) pair[1] = pair[1].replace("\\n", "\n");
+				if (useLinebreak) pair[1] = pair[1].split("\\n").join("\n");
 				// assign the key/value pair
 				bundles[locale][bundleName][StringUtil.trim(pair[0])] = StringUtil.trim(pair[1]);
 			}
