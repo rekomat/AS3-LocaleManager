@@ -6,8 +6,6 @@ For some reason, mx.flex.ResourceManager does not always work as expected [1]. I
 
 [1] http://forums.adobe.com/message/5182578
 
-__Note: This code has not been tested in a production environment yet. Improvements welcome!__
-
 ## Resource files
 
 The bundle files are stored in `app://locale/[locale]/[bundleName].txt`  (ie.: `app://locale/en_US/localizedStrings.txt`). Make sure the directory "locale" is copied to your build package:
