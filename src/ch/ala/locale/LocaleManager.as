@@ -185,9 +185,9 @@ package ch.ala.locale
 
 			// abort if bundle already available
 			if (identifier.locale in bundles 
-				&& identifier.bundle in bundles[identifier.locale]) 
+				&& identifier.bundleName in bundles[identifier.locale]) 
 			{
-				log("loadBundle: Bundle " + identifier.locale + "/" + identifier.bundle + " is already available.");
+				log("loadBundle: Bundle " + identifier.locale + "/" + identifier.bundleName + " is already available.");
 				unqueueFirst(true);
 				return;
 			}
